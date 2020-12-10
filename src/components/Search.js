@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Planet from './Planet';
 
+let url = "http://localhost:8080/NASA/";
+
 const initialState = {
     discoveryYear:"",
     discoveryMethod:"",
@@ -28,12 +30,12 @@ class Search extends Component {
 
     validate=()=> {
         let searchError="";
-
         if(this.state.searchText === ""){
             searchError = "must provide search input"
             this.setState({error:searchError});
-            return false;
+          return false;
         } 
+       
         return true;
     }
 
@@ -42,17 +44,20 @@ class Search extends Component {
         e.preventDefault();
 
         const isValid = this.validate();
-        console.log(this.validate())
-        console.log(this.state)
+        
         if(isValid){
 
-        axios.get('http://localhost:8080/NASA/allPlanets')
+        axios.post(url+'searchPlanets', {
+            
+            hostName:this.state.searchText,
+            discoveryYear:this.state.discoveryYear,
+            discoveryMethod:this.state.discoveryMethod,
+            discoveryFacility:this.state.discoveryFacility
+            
+        })
         .then(res =>{
-            console.log(res.data);
            let temp = res.data;
-            console.log(temp);
-            this.setState({planets:temp});
-           
+            this.setState({planets:temp});           
         }).catch(err => {
             console.log(err);
         })
@@ -60,6 +65,10 @@ class Search extends Component {
 }
 
     render() {
+        let planetDisplay = null;
+        if(this.state.planets.length !== 0){
+            planetDisplay = <Planet planets={this.state.planets}/>
+        }
         return(
             <div className="search">
                 Search componenet
@@ -77,9 +86,7 @@ class Search extends Component {
                     <button>search button</button>
                 </form>
         <div style={{color:"red"}}>{this.state.error}</div>
-            <Planet
-            planets={this.state.planets}
-            />
+            {planetDisplay}
             </div>
         );
     }
