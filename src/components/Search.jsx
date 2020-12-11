@@ -5,13 +5,16 @@ import Planet from './Planet';
 
 
 class Search extends Component {
+    //TODO: should create an array for the options and iterate over based on option select? slightly confused on user story here
+ 
+
     state = {
-        discoveryYear:"",
-        discoveryMethod:"",
-        hostName:"",
-        discoveryFacility:"",
-        // searchText:"",
-        value:"",
+        // discoveryYear:"",
+        // discoveryMethod:"",
+        // hostName:"",
+        // discoveryFacility:"",
+        category:"",
+        searchText:"",
         error:"",
         planets:[]
     }
@@ -32,7 +35,8 @@ class Search extends Component {
     }
 
     handleSelectChange = (event) => {
-        this.setState({value: event.target.value})
+        console.log(event);
+        this.setState({category: event.target.value})
     }
 
     validate=()=> {
@@ -81,9 +85,9 @@ class Search extends Component {
                 Search componenet
                 <form onSubmit={this.handleSubmit}>
                     <div>
-                        <select value={this.state.value} onChange={this.handleSelectChange}>
-                            <option></option>
-                            <option value="discoveryYear">discoveryYear</option>
+                        <select name="category" value={this.state.category} onChange={this.handleSelectChange}>
+                            <option disabled></option>
+                            <option name="discoveryYear" value={this.state.searchText}>discoveryYear</option>
                             <option value="discoveryMethod">discoveryMethod</option>
                             <option value="hostName">hostName</option>
                             <option value="discoveryFacility">discoveryFacility</option>
@@ -92,6 +96,7 @@ class Search extends Component {
                     </div>
                     <button>search button</button>
                 </form>
+                <div>{this.state.category}</div>
         <div style={{color:"red"}}>{this.state.error}</div>
         
             {planetDisplay}
