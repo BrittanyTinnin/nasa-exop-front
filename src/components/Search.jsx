@@ -10,18 +10,29 @@ class Search extends Component {
         discoveryMethod:"",
         hostName:"",
         discoveryFacility:"",
-        searchText:"",
-        selection:"",
+        // searchText:"",
+        value:"",
         error:"",
         planets:[]
     }
     
+
+    /*
+     * TODO:
+     * okay I'll work on it .. "posting this for reference later: but react needs a way to pass the this.state.selection to the appropriate state
+     * -then java needs to have other search logic added"
+     */
 
     handleChange = (event) => {
         const {name, value} = event.target
         this.setState({
             [name]:value
         })
+       
+    }
+
+    handleSelectChange = (event) => {
+        this.setState({value: event.target.value})
     }
 
     validate=()=> {
@@ -45,7 +56,7 @@ class Search extends Component {
 
         API.post('/searchPlanets', {
             
-            hostName:this.state.searchText,
+            hostName:this.state.hostName,
             discoveryYear:this.state.discoveryYear,
             discoveryMethod:this.state.discoveryMethod,
             discoveryFacility:this.state.discoveryFacility
@@ -70,7 +81,7 @@ class Search extends Component {
                 Search componenet
                 <form onSubmit={this.handleSubmit}>
                     <div>
-                        <select name="selection" value={this.state.selection} onChange={this.handleChange}>
+                        <select value={this.state.value} onChange={this.handleSelectChange}>
                             <option></option>
                             <option value="discoveryYear">discoveryYear</option>
                             <option value="discoveryMethod">discoveryMethod</option>
