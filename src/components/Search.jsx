@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import API from "./API"
 import Planet from './Planet';
 
-let url = "http://localhost:8080/NASA/";
 
 
 class Search extends Component {
@@ -44,7 +43,7 @@ class Search extends Component {
         
         if(isValid){
 
-        axios.post(url+'searchPlanets', {
+        API.post('/searchPlanets', {
             
             hostName:this.state.searchText,
             discoveryYear:this.state.discoveryYear,
