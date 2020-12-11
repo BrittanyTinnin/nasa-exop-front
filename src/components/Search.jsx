@@ -82,6 +82,7 @@ class Search extends Component {
                     <button>search button</button>
                 </form>
         <div style={{color:"red"}}>{this.state.error}</div>
+        
             {planetDisplay}
             </div>
         );
