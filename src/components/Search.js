@@ -4,24 +4,21 @@ import Planet from './Planet';
 
 let url = "http://localhost:8080/NASA/";
 
-const initialState = {
-    discoveryYear:"",
-    discoveryMethod:"",
-    hostName:"",
-    discoveryFacility:"",
-    searchText:"",
-    selection:"",
-    error:"",
-    planets:[]
-}
-class Search extends Component {
-    constructor(props){
-        super(props)
-        this.state=initialState;
-        this.handleChange = this.handleChange.bind(this);
-    }
 
-    handleChange(event){
+class Search extends Component {
+    state = {
+        discoveryYear:"",
+        discoveryMethod:"",
+        hostName:"",
+        discoveryFacility:"",
+        searchText:"",
+        selection:"",
+        error:"",
+        planets:[]
+    }
+    
+
+    handleChange = (event) => {
         const {name, value} = event.target
         this.setState({
             [name]:value
@@ -61,7 +58,7 @@ class Search extends Component {
         }).catch(err => {
             console.log(err);
         })
-    };
+    }
 }
 
     render() {
