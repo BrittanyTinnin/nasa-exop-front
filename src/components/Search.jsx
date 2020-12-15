@@ -2,41 +2,74 @@ import React, {Component} from 'react';
 import API from "./API"
 import Planet from './Planet';
 
+const initialState = {
+    discoveryYear:"",
+    discoveryMethod:"",
+    hostName:"",
+    discoveryFacility:"",
+    searchText:"",
+    selection:"",
+    error:"",
+    planets:[]
+}
+
+//TODO: get reference link to show
+//TODO: search by multiple fields (front & back)
+//TODO: User can see icons (such as up and down symbols) in the column headers
+//TODO: User can click on the up symbol to sort the rows in the results panel in ascending order on the values in that column.
+//TODO: User can click on the down symbol to sort the rows in the results panel in descending order on the values in the column.
+//TODO: get error to display message
+
 
 
 class Search extends Component {
-    //TODO: should create an array for the options and iterate over based on option select? slightly confused on user story here
- 
+    constructor(props) {
+        super(props)
+        this.state=initialState;
 
-    state = {
-        // discoveryYear:"",
-        // discoveryMethod:"",
-        // hostName:"",
-        // discoveryFacility:"",
-        category:"",
-        searchText:"",
-        error:"",
-        planets:[]
     }
     
+    handleClear = (e) => {
+        this.setState({state:initialState})
+    }
 
-    /*
-     * TODO:
-     * okay I'll work on it .. "posting this for reference later: but react needs a way to pass the this.state.selection to the appropriate state
-     * -then java needs to have other search logic added"
-     */
-
-    handleChange = (event) => {
+    handleSelect = (event) => {
         const {name, value} = event.target
         this.setState({
             [name]:value
         })
-       
+        this.setState({error:""});
+        this.setState({searchText:""})
     }
 
-    handleSelectChange = (event) => {
-        console.log(event);
-        this.setState({category: event.target.value})
+    handleInput = (event) => {
+        const {name, value} = event.target
+        this.setState({
+            [name]:value
+        })
+        if(this.state.selection === "hostName"){
+            this.setState((state) => ({
+                hostName: state.searchText
+            })
+            )
+        } else if(this.state.selection === "discoveryYear"){
+            this.setState((state) => ({
+                discoveryYear: state.searchText
+            })
+            )
+        } else if(this.state.selection === "discoveryFacility"){
+            this.setState((state) => ({
+                discoveryFacility: state.searchText
+            })
+            )
+        } else if(this.state.selection === "discoveryMethod"){
+            this.setState((state) => ({
+                discoveryMethod: state.searchText
+            })
+            )
+        } else {
+            this.setState({error:"provide search selection"})
+        }
     }
 
     validate=()=> {
@@ -46,7 +79,7 @@ class Search extends Component {
             this.setState({error:searchError});
           return false;
         } 
-       
+        this.setState({error:""});
         return true;
     }
 
@@ -57,7 +90,6 @@ class Search extends Component {
         const isValid = this.validate();
         
         if(isValid){
-
         API.post('/searchPlanets', {
             
             hostName:this.state.hostName,
@@ -85,18 +117,21 @@ class Search extends Component {
                 Search componenet
                 <form onSubmit={this.handleSubmit}>
                     <div>
-                        <select name="category" value={this.state.category} onChange={this.handleSelectChange}>
-                            <option disabled></option>
-                            <option name="discoveryYear" value={this.state.searchText}>discoveryYear</option>
+                        <select name="selection" value={this.state.selection} onChange={this.handleSelect}>
+                            <option></option>
+                            <option value="discoveryYear">discoveryYear</option>
                             <option value="discoveryMethod">discoveryMethod</option>
                             <option value="hostName">hostName</option>
                             <option value="discoveryFacility">discoveryFacility</option>
                         </select>
-                        <input type="text" name="searchText" placeholder="search" value={this.state.searchText} onChange={this.handleChange}/>
+                        <input type="text" name="searchText" placeholder="search" value={this.state.searchText} onChange={this.handleInput}/>
                     </div>
                     <button>search button</button>
                 </form>
-                <div>{this.state.category}</div>
+
+                <form onSubmit={this.handleClear}>
+                <button>clear</button>
+                </form>
         <div style={{color:"red"}}>{this.state.error}</div>
         
             {planetDisplay}
