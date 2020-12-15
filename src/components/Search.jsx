@@ -13,6 +13,13 @@ const initialState = {
     planets:[]
 }
 
+//TODO: get reference link to show
+//TODO: search by multiple fields (front & back)
+//TODO: User can see icons (such as up and down symbols) in the column headers
+//TODO: User can click on the up symbol to sort the rows in the results panel in ascending order on the values in that column.
+//TODO: User can click on the down symbol to sort the rows in the results panel in descending order on the values in the column.
+//TODO: get error to display message
+/*
 
 
 class Search extends Component {
